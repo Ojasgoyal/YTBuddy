@@ -4,6 +4,7 @@ import {
   replyToComment,
   deleteComment,
 } from "../services/youtube.service.js";
+import { logEvent } from "../services/eventLog.service.js";
 
 export const fetchComments = async (req, res) => {
   try {
@@ -25,6 +26,15 @@ export const createComment = async (req, res) => {
     const { text } = req.body;
 
     const comment = await addComment(userId, videoId, text);
+    await logEvent({
+      userId,
+      videoId,
+      action: "COMMENT_ADDED",
+      metadata: {
+        commentId: comment._id,
+      },
+    });
+
     res.json(comment);
   } catch (err) {
     console.error(err);
@@ -52,6 +62,13 @@ export const removeComment = async (req, res) => {
     const { commentId } = req.params;
 
     await deleteComment(userId, commentId);
+    await logEvent({
+      userId,
+      action: "COMMENT_DELETED",
+      metadata: {
+        commentId,
+      },
+    });
     res.json({ success: true });
   } catch (err) {
     console.error(err);

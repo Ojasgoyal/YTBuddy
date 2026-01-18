@@ -2,6 +2,7 @@ import {
   getVideoDetails,
   updateVideoDetails,
 } from "../services/youtube.service.js";
+import { logEvent } from "../services/eventLog.service.js"
 
 export const fetchVideo = async (req, res) => {
   try {
@@ -9,6 +10,12 @@ export const fetchVideo = async (req, res) => {
     const { videoId } = req.params;
 
     const video = await getVideoDetails(userId, videoId);
+
+    await logEvent({
+      userId,
+      videoId,
+      action: "VIDEO_FETCHED",
+    });
 
     res.setHeader(
       "Cache-Control",
@@ -36,6 +43,16 @@ export const updateVideo = async (req, res) => {
     const updated = await updateVideoDetails(userId, videoId, {
       title,
       description,
+    });
+
+    await logEvent({
+      userId,
+      videoId,
+      action: "VIDEO_UPDATED",
+      metadata: {
+        title,
+        description,
+      },
     });
 
     res.setHeader(

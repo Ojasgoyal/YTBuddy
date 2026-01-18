@@ -1,4 +1,5 @@
 import Note from "../models/Note.js";
+import { logEvent } from "../services/eventLog.service.js";
 
 export const getNotes = async (req, res) => {
   try {
@@ -35,6 +36,14 @@ export const createNote = async (req, res) => {
       content,
       tags,
     });
+    await logEvent({
+      userId,
+      videoId,
+      action: "NOTE_CREATED",
+      metadata: {
+        noteId: note._id,
+      },
+    });
 
     res.json(note);
   } catch (err) {
@@ -49,6 +58,14 @@ export const deleteNote = async (req, res) => {
     const { noteId } = req.params;
 
     await Note.deleteOne({ _id: noteId, userId });
+    await logEvent({
+      userId,
+      action: "NOTE_DELETED",
+      metadata: {
+        noteId,
+      },
+    });
+
     res.json({ success: true });
   } catch (err) {
     console.error(err);
