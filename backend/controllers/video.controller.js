@@ -6,7 +6,15 @@ export const fetchVideo = async (req, res) => {
     const { videoId } = req.params;
 
     const video = await getVideoDetails(userId, videoId);
-    res.set("Cache-Control", "no-store");
+
+    
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+    res.setHeader("Surrogate-Control", "no-store");
+    res.setHeader("CDN-Cache-Control", "no-store");
+    res.setHeader("Vercel-CDN-Cache-Control", "no-store");
+    
     res.json(video);
   } catch (err) {
     console.error(err);

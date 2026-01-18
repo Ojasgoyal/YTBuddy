@@ -14,7 +14,7 @@ function Dashboard() {
     const videoId = extractVideoId(url);
     if (!videoId) return alert("Invalid URL");
 
-    const res = await axios.get(`/api/video/${videoId}`);
+    const res = await axios.get(`/api/video/${videoId}?_=${Date.now()}`)
     setVideo(res.data);
     localStorage.setItem("currentVideoId", videoId);
   };
@@ -23,12 +23,15 @@ function Dashboard() {
     try {
       setSaving(true);
 
-      const res = await axios.patch(`/api/video/${video.id}`, {
+      await axios.patch(`/api/video/${video.id}`, {
         title: video.snippet.title,
         description: video.snippet.description,
       });
 
-      setVideo(res.data);
+      // Always refetch from source of truth
+      const fresh = await axios.get(`/api/video/${video.id}?t=${Date.now()}`);
+      setVideo(fresh.data);
+
       alert("Updated successfully");
     } catch (err) {
       console.error(err);
