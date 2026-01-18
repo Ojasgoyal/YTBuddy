@@ -8,7 +8,7 @@ export default function StudioLayout({ children }) {
         <Button variant="ghost">Logout</Button>
       </header>
 
-      <main className="max-w-4xl mx-auto p-8 space-y-8">
+      <main className="max-w-6xl mx-auto p-8 space-y-8">
         {children}
       </main>
     </div>

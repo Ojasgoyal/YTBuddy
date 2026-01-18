@@ -11,7 +11,7 @@ export const googleAuth = (req, res) => {
 
   const url = oauth2Client.generateAuthUrl({
     access_type: "offline", // IMPORTANT: gives refresh token
-    prompt: "consent", // ensures refresh token on re-login
+    prompt: "consent select_account", // show the account chooser and force consent (so user can pick a different Google account)
     scope: scopes,
   });
 
