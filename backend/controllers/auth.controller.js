@@ -78,3 +78,15 @@ export const authStatus = async (req, res) => {
 
   res.json({ connected: true, user });
 };
+
+export const logout = (req, res) => {
+  const isProd = process.env.NODE_ENV === "production";
+
+  res.clearCookie("userId", {
+    httpOnly: true,
+    sameSite: isProd ? "none" : "lax",
+    secure: isProd,
+  });
+
+  res.json({ success: true });
+};
