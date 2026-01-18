@@ -1,4 +1,7 @@
-import { getVideoDetails, updateVideoDetails } from "../services/youtube.service.js";
+import {
+  getVideoDetails,
+  updateVideoDetails,
+} from "../services/youtube.service.js";
 
 export const fetchVideo = async (req, res) => {
   try {
@@ -7,14 +10,16 @@ export const fetchVideo = async (req, res) => {
 
     const video = await getVideoDetails(userId, videoId);
 
-    
-    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+    res.setHeader(
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate, proxy-revalidate",
+    );
     res.setHeader("Pragma", "no-cache");
     res.setHeader("Expires", "0");
     res.setHeader("Surrogate-Control", "no-store");
     res.setHeader("CDN-Cache-Control", "no-store");
     res.setHeader("Vercel-CDN-Cache-Control", "no-store");
-    
+
     res.json(video);
   } catch (err) {
     console.error(err);
@@ -32,6 +37,16 @@ export const updateVideo = async (req, res) => {
       title,
       description,
     });
+
+    res.setHeader(
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate, proxy-revalidate",
+    );
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+    res.setHeader("Surrogate-Control", "no-store");
+    res.setHeader("CDN-Cache-Control", "no-store");
+    res.setHeader("Vercel-CDN-Cache-Control", "no-store");
 
     res.json(updated);
   } catch (err) {
