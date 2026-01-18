@@ -14,7 +14,7 @@ function Dashboard() {
     const videoId = extractVideoId(url);
     if (!videoId) return alert("Invalid URL");
 
-    const res = await axios.get(`/api/video/${videoId}?_=${Date.now()}`)
+    const res = await axios.get(`/api/video/${videoId}?_=${Date.now()}`);
     setVideo(res.data);
     localStorage.setItem("currentVideoId", videoId);
   };
@@ -28,11 +28,16 @@ function Dashboard() {
         description: video.snippet.description,
       });
 
-      // Always refetch from source of truth
-      const fresh = await axios.get(`/api/video/${video.id}?t=${Date.now()}`);
-      setVideo(fresh.data);
-
       alert("Updated successfully");
+      // Always refetch from source of truth
+      setTimeout(async () => {
+        try {
+          const fresh = await axios.get(
+            `/api/video/${video.id}?_=${Date.now()}`,
+          );
+          setVideo(fresh.data);
+        } catch {}
+      }, 2000);
     } catch (err) {
       console.error(err);
       alert("Update failed");
@@ -52,7 +57,7 @@ function Dashboard() {
 
     const restoreVideo = async () => {
       try {
-        const res = await axios.get(`/api/video/${savedVideoId}`);
+        const res = await axios.get(`/api/video/${savedVideoId}?_=${Date.now()}`);
         setVideo(res.data);
       } catch (err) {
         console.error(err);
