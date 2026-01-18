@@ -3,7 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function ConnectYouTubeCard() {
   const handleConnect = () => {
-    window.location.href = "http://localhost:3000/auth/google";
+    const base = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+    window.location.href = `${base.replace(/\/$/, "")}/auth/google`;
   };
 
   return (

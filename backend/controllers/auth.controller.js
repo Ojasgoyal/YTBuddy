@@ -11,7 +11,7 @@ export const googleAuth = (req, res) => {
 
   const url = oauth2Client.generateAuthUrl({
     access_type: "offline", // IMPORTANT: gives refresh token
-    prompt: "consent",      // ensures refresh token on re-login
+    prompt: "consent", // ensures refresh token on re-login
     scope: scopes,
   });
 
@@ -49,7 +49,8 @@ export const googleCallback = async (req, res) => {
     // Set cookie
     res.cookie("userId", user._id.toString(), {
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: "none",
+      secure: true,
     });
 
     res.redirect("http://localhost:5173"); // Vite default
@@ -58,7 +59,6 @@ export const googleCallback = async (req, res) => {
     res.status(500).send("OAuth failed");
   }
 };
-
 
 export const authStatus = async (req, res) => {
   const userId = req.cookies.userId;

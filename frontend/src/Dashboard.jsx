@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../axios.js";
 import VideoInput from "./components/VideoInput";
 import { extractVideoId } from "./lib/extractVideoId";
 import { Button } from "@/components/ui/button";
@@ -121,6 +121,9 @@ function Dashboard() {
       )}
 
       {video && <CommentsSection videoId={video.id} className="w-1/2" />}
+
+
+      {video && <NotesSection videoId={video.id} />}
       </div>
     </div>
   );
