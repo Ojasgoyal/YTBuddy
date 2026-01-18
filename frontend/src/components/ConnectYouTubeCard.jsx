@@ -1,3 +1,6 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
 export default function ConnectYouTubeCard() {
   const handleConnect = () => {
     const base = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
