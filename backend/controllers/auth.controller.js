@@ -46,14 +46,18 @@ export const googleCallback = async (req, res) => {
       await user.save();
     }
 
-    // Set cookie
+    // Set cookie (env-aware)
+    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+    const isProd = process.env.NODE_ENV === "production";
+
     res.cookie("userId", user._id.toString(), {
       httpOnly: true,
-      sameSite: "none",
-      secure: true,
+      sameSite: isProd ? "none" : "lax",
+      secure: isProd,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
-    res.redirect("http://localhost:5173"); // Vite default
+    res.redirect(frontendUrl);
   } catch (err) {
     console.error(err);
     res.status(500).send("OAuth failed");

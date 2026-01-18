@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import axios from "../axios.js";
+import axios from "./axios.js";
 import VideoInput from "./components/VideoInput";
 import { extractVideoId } from "./lib/extractVideoId";
 import { Button } from "@/components/ui/button";
 import CommentsSection from "./components/CommentsSection";
+import NotesSection from "./components/NotesSection.jsx";
 
 function Dashboard() {
   const [video, setVideo] = useState(null);

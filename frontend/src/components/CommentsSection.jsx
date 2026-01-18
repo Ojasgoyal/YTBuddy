@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../axios.js";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
@@ -13,7 +13,10 @@ export default function CommentsSection({ videoId }) {
 
   const loadComments = async () => {
     const res = await axios.get(`/api/comments/${videoId}`);
-    setComments(res.data);
+    const payload = res.data;
+    // normalize common response shapes: array | { items: [...] } | { comments: [...] }
+    const list = Array.isArray(payload) ? payload : payload.items ?? payload.comments ?? [];
+    setComments(list);
   };
 
   useEffect(() => {
@@ -97,7 +100,7 @@ export default function CommentsSection({ videoId }) {
       </div>
 
       <div className="space-y-6">
-        {comments.map((c) => {
+        {Array.isArray(comments) && comments.map((c) => {
           const top = c.snippet.topLevelComment.snippet;
 
           return (
